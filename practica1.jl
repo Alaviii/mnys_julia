@@ -43,11 +43,11 @@ end
 function main()
     tabla::Array{Float64,2} = readdlm("tabla.dat")
 
-    fichout::IOStream = open("test.dat", "w")
+    fichlagrange::IOStream = open("lagrange.dat", "w")
 
     lagrange_input = 0.4
     while lagrange_input <=0.8
-        println(fichout, lagrange(tabla,lagrange_input))
+        println(fichlagrange, lagrange(tabla,lagrange_input))
 
         lagrange_input +=0.01
     end
