@@ -1,5 +1,18 @@
 using DelimitedFiles
 
+cotes::Array{Int64,2} = readdlm("cotes.dat")
+
+function main()
+
+    for i in UnitRange(1,8)
+        display(newtoncotes(f,0,1,i))
+    end
+    
+    display(trapeciocompuesto(f,0,1,10000))
+    
+    display(simpsoncompuesto(f,0,1,100000))
+end
+
 function f(x)
     return 1/(x+1)
 end
@@ -53,13 +66,4 @@ function simpsoncompuesto(func::Function, lim_inf, lim_sup, n_intervalos::Int64)
     return (h/3)*(func(lim_inf)+func(lim_sup)+4*suma_impares+2*suma_pares)
 end
 
-
-for i in UnitRange(1,8)
-    display(newtoncotes(f,0,1,i))
-end
-
-cotes::Array{Int64,2} = readdlm("cotes.dat")
-
-display(trapeciocompuesto(f,0,1,10000))
-
-display(simpsoncompuesto(f,0,1,100000))
+main()
