@@ -3,6 +3,10 @@ using DelimitedFiles
 cotes::Array{Int64,2} = readdlm("cotes.dat")
 
 function main()
+    function f(x)
+        return 1/(x+1)
+    end
+
     for i in UnitRange(1,8)
         display(newtoncotes(f,0,1,i))
     end
@@ -10,10 +14,6 @@ function main()
     display(trapeciocompuesto(f,0,1,10000))
     
     display(simpsoncompuesto(f,0,1,100000))
-end
-
-function f(x)
-    return 1/(x+1)
 end
 
 function newtoncotes(func::Function, lim_inf, lim_sup, n_newton_cotes::Int64)
@@ -43,6 +43,7 @@ function trapeciocompuesto(func::Function, lim_inf, lim_sup, n_intervalos::Int64
 end
 
 function simpsoncompuesto(func::Function, lim_inf, lim_sup, n_intervalos::Int64)
+    
     if n_intervalos%2 != 0
         return "error, n ha de ser par"
     end
