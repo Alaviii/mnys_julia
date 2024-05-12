@@ -4,26 +4,35 @@ cotes::Array{Int64,2} = readdlm("cotes.dat")
 
 function main()
     function f(x)
-        return 1/(x+1)
+        return (sqrt(8*0.0077))/sqrt(2.3^2.5-x^2.5)
     end
 
-    for i in UnitRange(1,8)
-        display(newtoncotes(f,0,1,i))
+    function fbeta(x, beta)
+        return sqrt(8*0.0077)/sqrt(2.3^beta-x^beta)
     end
 
-    display("Trapecio Compuesto:")
-    display(trapeciocompuesto(f,0,1,100000))
-    
-    display("Simpson Compuesto:")
-    display(simpsoncompuesto(f,0,1,100000))
+    limsup = 2.3-0.001
 
-    display("Romberg")
-    display(romberg(f,0,1,30))
+    display(newtoncotes(f,0,limsup,6))
+    display(trapeciocompuesto(f,0,limsup,20))
+    display(simpsoncompuesto(f,0,limsup,20))
+    display(romberg(f,0,limsup,6))
 
-    display("Derivación")
-    display(derivadadefinicion(f,1,0.0001))
-    display(derivadataylor(f,1,0.0001))
-    display(derivadarichardson(f,1,0.0001))
+    display(segundaderivada(f,1.77,0.001))
+
+    beta = 2
+    n = (3-2)/100
+    suma = 0
+    i = 0
+    while beta<=3
+        suma += trapeciocompuestobeta(fbeta,beta,0,limsup,20)
+        beta+=n
+        i +=1
+    end
+
+    display(suma)
+    display(i)
+
 end
 
 function newtoncotes(func::Function, lim_inf, lim_sup, n_newton_cotes::Int64)
@@ -47,6 +56,20 @@ function trapeciocompuesto(func::Function, lim_inf, lim_sup, n_intervalos::Int64
 
     for i in UnitRange(1,n_intervalos-1)
         suma += func(lim_inf + i*h)
+    end
+    
+    return integral + h*suma
+end
+
+function trapeciocompuestobeta(func::Function, beta, lim_inf, lim_sup, n_intervalos::Int64)
+    h::Float64 = (lim_sup-lim_inf)/n_intervalos
+
+    integral::Float64 = (h/2)*(func(lim_inf,beta)+func(lim_sup,beta))
+
+    suma::Float64 = 0
+
+    for i in UnitRange(1,n_intervalos-1)
+        suma += func(lim_inf + i*h,beta)
     end
     
     return integral + h*suma
@@ -104,6 +127,10 @@ end
 
 function derivadarichardson(f::Function, x, h)
     return (4.0/3.0)*((f(x+h/2)-f(x-h/2))/h) - (1.0/3.0)*((f(x+h)-f(x-h))/(2*h))
+end
+
+function segundaderivada(f::Function, x, h)
+    return (f(x+h)-2*f(x)+f(x-h))/h^2
 end
 
 main()
