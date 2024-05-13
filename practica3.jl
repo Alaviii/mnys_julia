@@ -4,23 +4,41 @@ function main()
     sistemagauss::Array{Float64, 2} = readdlm("matrizin.dat")
     sistemadiv::Array{Float64, 2} = readdlm("matrizin.dat")
     sistemajordan::Array{Float64, 2} = readdlm("matrizin.dat")
+
     matrizcuadrada::Array{Float64, 2} = readdlm("matrizcuadrada.dat")
+
     sistema::Array{Float64,2} = readdlm("matrizin.dat")
+
+    solviblegauss = readdlm("sistemasolvible.dat")
+    solviblediv = readdlm("sistemasolvible.dat")
+    solviblejordan = readdlm("sistemasolvible.dat")
+
+    solviblecuadrado::Array{Float64,2} = readdlm("solviblecuadrado.dat")
+
     solvible::Array{Float64,2} = readdlm("sistemasolvible.dat")
+
 
 
     writedlm("matrizout.dat",sistemagauss)
 
     display(gauss!(sistemagauss))
+    display(gauss!(solviblegauss))
 
     display(divisionunica!(sistemadiv))
+    display(divisionunica!(solviblediv))
 
     display(gaussjordan!(sistemajordan))
+    display(gaussjordan!(solviblejordan))
 
     (l,u) = lu(matrizcuadrada)
     display(l)
     display(u)
     display(l*u)
+
+    (l2,u2) = lu(solviblecuadrado)
+    display(l2)
+    display(u2)
+    display(l2*u2)
 
     display(richardson(sistema,iteraciones = 150))
     display(jacobi(sistema,iteraciones = 150))
