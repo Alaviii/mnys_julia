@@ -275,9 +275,7 @@ function gaussseidel(a::Array{Float64,2}; seed::Array{Float64,1}=zeros(Float64,s
                 end
                 sumavieja = 0
                 for j in range(i+1,n)
-                    if j != i
-                        sumavieja += a[i,j]xvieja[j]
-                    end
+                    sumavieja += a[i,j]xvieja[j]
                 end
 
                 xnueva[i] = (a[i,indice_b]-sumanueva-sumavieja)/a[i,i]
